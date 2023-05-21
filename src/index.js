@@ -4,7 +4,7 @@ import * as myTask from "./task.js"
 import { saveLibrary, getLibrary } from "./localStorage";
 
 saveLibrary(library());
-const Library = getLibrary();
+const Library = getLibrary() || library();
 
 const defualtProject = projectFactory('Default');
 Library.addTodo(defualtProject);
