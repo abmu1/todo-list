@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./main.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Todo List</title>
+  </head>
+  <body>
+    <header>TodoList</header>
+    <main id="content">
+      <div id="projects-window">
+        <div class="titles">
+          <h1>Projects</h1>
+          <button id="add-project">Add Project</button>
+        </div>
+        <form class="hidden" id="project-popup">
+          <input type="text" id="project-title" placeholder="Project Title" required>
+          <button type="submit" id="addP">Add</button>
+          <button type="button" id="cancelP">Cancel</button>
+        </form>
+        <ul id="projects"></ul>
+      </div>
+      <div id="tasks-window">
+        <h1 id="current-project"></h1>
+        <div class="titles">
+          <h1>Tasks</h1>
+          <button id="add-task">Add Task</button>
+        </div>
+        <form class="hidden" id="task-popup">
+          <input type="text" id="task-name" placeholder="Task Name" required>
+          <input type="date" id="due-date" required>
+          <select name="priority" id="priority" required>
+            <option value="Default">None</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+          <button type="submit" id="addT">Add</button>
+          <button type="button" id="cancelT">Cancel</button>
+        </form>
+        <ul id="tasks"></ul>
+      </div>
+    </main>
+    <footer id="footer">You Like It?</footer>
+  </body>
+</html>
