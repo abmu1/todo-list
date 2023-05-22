@@ -31,7 +31,9 @@ function getDataFromPopup(Library,taskFactory) {
       if (name === check) {
         taskName.setCustomValidity('There is already a task with this name!');
         taskName.reportValidity();
-        taskName.setCustomValidity("");
+        taskName.oninput = () => {
+          taskName.setCustomValidity("");
+        }
         return;
       };
     };
