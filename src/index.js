@@ -1,14 +1,15 @@
 import { library, projectFactory, taskFactory } from "./factories";
 import * as myProject from "./project";
 import * as myTask from "./task.js"
-import { saveLibrary, getLibrary } from "./localStorage";
+import { getLibrary } from "./localStorage";
 
-saveLibrary(library());
-const Library = getLibrary() || library();
-
+const tempLibrary = library();
 const defualtProject = projectFactory('Default');
-Library.addTodo(defualtProject);
-Library.currentTodo = defualtProject;
+tempLibrary.addTodo(defualtProject);
+tempLibrary.currentTodo = defualtProject;
+
+const Library = getLibrary() || tempLibrary;
+
 myProject.showProjectPopup();
 myProject.hideProjectPopup();
 myProject.getDataFromProjectForm(Library, projectFactory);
@@ -18,8 +19,8 @@ myTask.getDataFromPopup(Library, taskFactory);
 Library.todos.forEach(project => {
   myProject.renderProject(Library, project);
 });
-myTask.renderTask(defualtProject, Library);
-document.getElementById('projects').firstChild.click()
+Library.currentTodo = Library.todos[0];
+document.getElementById('projects').firstChild?.click()
 
 document.addEventListener('click', (event) => {
   const task_pop = document.getElementById('task-popup');

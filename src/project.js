@@ -12,6 +12,7 @@ function showProjectPopup() {
     titleInput.focus();
   });
 };
+
 function hideProjectPopup() {
   const cancelP = document.getElementById('cancelP');
   cancelP.addEventListener('click', () => {
@@ -20,15 +21,17 @@ function hideProjectPopup() {
     projectPopup.classList.add('hidden');
   });
 };
-// Catch data from this function and make project object and then store in library
+
 function getDataFromProjectForm(Library,projectFactory) {
   const projectPopup = document.getElementById('project-popup');
   projectPopup.addEventListener('submit', (e) => {
     e.preventDefault();
     const titleInput = document.getElementById('project-title');
     const projectTitle = titleInput.value;
+    let name = projectTitle.toLowerCase().trim();
     for (let i = 0; i < Library.todos.length; i++) {
-      if (projectTitle === Library.todos[i].name) {
+      let check = Library.todos[i].name.toLowerCase();
+      if (name === check) {
         titleInput.setCustomValidity('There is already a project with this name!');
         titleInput.reportValidity();
         titleInput.setCustomValidity("");
@@ -38,6 +41,10 @@ function getDataFromProjectForm(Library,projectFactory) {
     const project = projectFactory(projectTitle);
     Library.addTodo(project);
     renderProject(Library, project);
+    if (Library.todos.length === 1) {
+      Library.currentTodo = project;
+      renderTask(Library);
+    }
     titleInput.value = '';
     projectPopup.reset();
     const cancelP = document.getElementById('cancelP');
@@ -46,7 +53,7 @@ function getDataFromProjectForm(Library,projectFactory) {
     saveLibrary(Library);
   });
 };
-// Catch element from this function in renderPage()
+
 function renderProject(Library, project) {
   const ul = document.getElementById('projects');
   const li = document.createElement('li');
@@ -56,7 +63,7 @@ function renderProject(Library, project) {
   li.dataset.name = project.name;
   li.addEventListener('click', () => {
     Library.currentTodo = project;
-    renderTask(project);
+    renderTask(Library);
     const clicked = document.querySelector('.clicked');
     clicked?.classList.remove('clicked');
     li.classList.add('clicked');
@@ -80,41 +87,13 @@ function removeClosure(Library, project) {
     Library.removeTodo(projName);
     parent.remove();
     if (Library.currentTodo === project) {
-      renderTask(Library.todos[0], Library);
+      Library.currentTodo = Library.todos[0];
+      renderTask(Library);
     }
     // save library updates to local storage.
     saveLibrary(Library);
   };
 };
-
-
-// function renderProjectTasks(project) {
-//   const ul = document.getElementById('tasks');
-//   ul.innerHTML = '';
-//   let i = 0;
-//   project.tasks.forEach(task => {
-//     const li = document.createElement('li');
-//     const doneButton = document.createElement('button');
-//     const nameP = document.createElement('p');
-//     const dateP = document.createElement('p');
-//     const removeButton = document.createElement('button');
-//     li.classList.add('task', task.priority);
-//     doneButton.classList.add('done');
-//     nameP.classList.add('task-name');
-//     dateP.classList.add('date');
-//     removeButton.classList.add('remove', 'remove-task');
-//     removeButton.innerHTML = '&times'
-//     nameP.textContent = task.name;
-//     dateP.textContent = task.dueDate;
-//     doneButton.addEventListener('click', () => {
-//       removeButton.click();
-//     });
-//     li.append(doneButton,nameP,dateP,removeButton);
-//     li.dataset.index = i
-//     i += 1;
-//     ul.append(li);
-//   })
-// };
 
 export{showProjectPopup,hideProjectPopup,
         getDataFromProjectForm,renderProject,

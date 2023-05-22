@@ -25,8 +25,10 @@ function getDataFromPopup(Library,taskFactory) {
   task_pop.addEventListener('submit', (e) => {
     e.preventDefault();
     const taskName = document.getElementById('task-name');
+    let name = taskName.value.toLowerCase().trim();
     for (let i = 0; i < Library.currentTodo.tasks.length; i++) {
-      if (taskName.value === Library.currentTodo.tasks[i].name) {
+      let check = Library.currentTodo.tasks[i].name.toLowerCase();
+      if (name === check) {
         taskName.setCustomValidity('There is already a task with this name!');
         taskName.reportValidity();
         taskName.setCustomValidity("");
@@ -35,12 +37,12 @@ function getDataFromPopup(Library,taskFactory) {
     };
     const dueDate = document.getElementById('due-date');
     const priority = document.getElementById('priority');
-    const task = taskFactory(taskName.value,dueDate.value,priority.value);
+    const task = taskFactory(taskName.value.trim(),dueDate.value,priority.value);
     taskName.value = '';
     dueDate.value = '';
     const ct = Library.currentTodo;
     ct.addTask(task);
-    renderTask(ct);
+    renderTask(Library);
     task_pop.reset();
     const cancelT = document.getElementById('cancelT');
     cancelT.click()
@@ -49,12 +51,14 @@ function getDataFromPopup(Library,taskFactory) {
   });
 };
 
-function renderTask(project, Library) {
-  if (!project) return;
+function renderTask(Library) {
+  let project = Library.currentTodo;
   let h1 = document.getElementById('current-project');
-  h1.innerText = project.name;
+  h1.innerText = '';
   const ul = document.getElementById('tasks');
   ul.innerHTML = '';
+  if (!project) return;
+  h1.innerText = project.name;
   project.tasks.forEach(task => {
     const li = document.createElement('li');
     const doneButton = document.createElement('button');
@@ -67,7 +71,7 @@ function renderTask(project, Library) {
     dateP.classList.add('date');
     removeButton.classList.add('remove', 'remove-task');
     removeButton.innerHTML = '&times'
-    removeButton.addEventListener('click', removeTask(project, Library))
+    removeButton.addEventListener('click', removeTask(Library))
     nameP.textContent = task.name;
     dateP.textContent = task.dueDate;
     doneButton.addEventListener('click', () => {
@@ -79,6 +83,7 @@ function renderTask(project, Library) {
       }
       task.isDone = true;
       li.classList.add('completed');
+      saveLibrary(Library);
     });
     if (task.isDone) {
       li.classList.add('completed');
@@ -89,8 +94,9 @@ function renderTask(project, Library) {
   });
 };
 
-function removeTask(project, Library) {
+function removeTask(Library) {
   return function (e) {
+    let project = Library.currentTodo;
     const task = e.target.parentElement;
     project.removeTask(task.dataset.name);
     task.remove();

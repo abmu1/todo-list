@@ -11,7 +11,7 @@ const library = ( todos = []) => {
     };
   };
   const updateCT = (todo) => {
-    currentTodo = todo
+    currentTodo = todo;
   };
   const index = () => {
     return todos.length;
@@ -36,9 +36,8 @@ const projectFactory = (name, tasks = []) => {
   return {name,tasks,addTask,removeTask,index};
 };
 
-const taskFactory = (name, dueDate, priority) => {
+const taskFactory = (name, dueDate, priority, isDone = false) => {
   let description = '';
-  let isDone = false;
   const addDescription = (d) => {
     description = d;
   };
