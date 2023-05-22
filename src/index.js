@@ -6,8 +6,6 @@ import { saveLibrary, getLibrary } from "./localStorage";
 saveLibrary(library());
 const Library = getLibrary() || library();
 
-console.log('hiiii')
-
 const defualtProject = projectFactory('Default');
 Library.addTodo(defualtProject);
 Library.currentTodo = defualtProject;
