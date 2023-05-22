@@ -34,7 +34,7 @@ function getDataFromProjectForm(Library,projectFactory) {
       if (name === check) {
         titleInput.setCustomValidity('There is already a project with this name!');
         titleInput.reportValidity();
-        titleInput.setCustomValidity("");
+        // titleInput.setCustomValidity("");
         return;
       };
     };
