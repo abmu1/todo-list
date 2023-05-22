@@ -20,7 +20,7 @@ myTask.getDataFromPopup(Library, taskFactory);
 Library.todos.forEach(project => {
   myProject.renderProject(Library, project);
 });
-myTask.renderTask(defualtProject);
+myTask.renderTask(defualtProject, Library);
 document.getElementById('projects').firstChild.click()
 
 document.addEventListener('click', (event) => {
